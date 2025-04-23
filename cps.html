@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area and Volume Calculator</title>
+  <link rel="stylesheet" href="cps.style.css">
+</head>
+<body>
+  <h1 id="title">Area and Volume Calculator</h1>
+  <div id="box">
+    <input type="text" id="input1" placeholder="Enter length">
+    <input type="text" id="input2" placeholder="Enter breadth">
+    <input type="text" id="input3" placeholder="Enter height" style="opacity: 0;">
+    
+  <input type="text" id="output" readonly>
+  
+  <h2>Select What you want to calculate</h2>
+  <div id="mode-selector">
+    <label>
+      <input type="radio" name="mode" value="area" onclick="selectArea()" checked>
+      Area
+    </label>
+    <label>
+      <input type="radio" name="mode" value="volume" onclick="selectVolume()">
+      Volume
+    </label>
+  </div>
+  <h3>Select Shape</h3>
+  <div id="shape-selector">
+    <select id="shape" onchange="selectShape()">
+      <option value="cuboid" selected>Cuboid</option>
+      <option value="cube">Cube</option>
+    </select>
+  </div>
+  <div id="clear-calculate">
+  <button id="clear" onclick="allClear()">Clear</button>
+  <button id="calculate" onclick="calculate()">Calculate</button></div>
+  </div>
+</body>
+<script src="cps.js"></script>
+<script>
+let mode = "area"; // Default mode is "area"
+let shape = "cuboid"; // Default shape is "cuboid"
+
+function calculate() {
+  const length = parseFloat(document.getElementById("input1").value);
+  const breadth = parseFloat(document.getElementById("input2").value);
+  const height = parseFloat(document.getElementById("input3").value);
+
+  if (isNaN(length)) {
+    document.getElementById("output").value = "Please enter a valid length.";
+    return;
+  }
+
+  if (shape === "cuboid") {
+    if (isNaN(breadth)) {
+      document.getElementById("output").value = "Please enter a valid breadth.";
+      return;
+    }
+
+    if (mode === "area") {
+      if (isNaN(height)) {
+        document.getElementById("output").value = "Please enter a valid height.";
+        return;
+      }
+      const area = 2 * (length * breadth + length * height + breadth * height);
+      document.getElementById("output").value = `Cuboid Area: ${area}`;
+    } else if (mode === "volume") {
+      if (isNaN(height)) {
+        document.getElementById("output").value = "Please enter a valid height.";
+        return;
+      }
+      const volume = length * breadth * height;
+      document.getElementById("output").value = `Cuboid Volume: ${volume}`;
+    }
+  } else if (shape === "cube") {
+    if (mode === "area") {
+      const area = 6 * (length * length);
+      document.getElementById("output").value = `Cube Area: ${area}`;
+    } else if (mode === "volume") {
+      const volume = length * length * length;
+      document.getElementById("output").value = `Cube Volume: ${volume}`;
+    }
+  }
+}
+
+function selectArea() {
+  mode = "area"; // Set mode to "area"
+  document.getElementById("input3").style.opacity = shape === "cuboid" ? 1 : 0; // Show height for cuboid
+  document.getElementById("output").value = ""; // Clear output
+}
+
+function selectVolume() {
+  mode = "volume"; // Set mode to "volume"
+  document.getElementById("input3").style.opacity = shape === "cuboid" ? 1 : 0; // Show height for cuboid
+  document.getElementById("output").value = ""; // Clear output
+}
+
+function selectShape() {
+  const selectedShape = document.getElementById("shape").value;
+  shape = selectedShape; // Update shape based on dropdown selection
+
+  if (shape === "cube") {
+    document.getElementById("input2").style.opacity = 0; // Hide breadth input
+    document.getElementById("input3").style.opacity = 0; // Hide height input
+  } else if (shape === "cuboid") {
+    document.getElementById("input2").style.opacity = 1; // Show breadth input
+    document.getElementById("input3").style.opacity = 1; // Show height input
+  }
+}
+
+function allClear() {
+  document.getElementById("input1").value = ""; // Clear input1
+  document.getElementById("input2").value = ""; // Clear input2
+  document.getElementById("input3").value = ""; // Clear input3
+  document.getElementById("output").value = ""; // Clear output
+}
+</script>
+</html>
